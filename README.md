@@ -70,6 +70,11 @@ In order to build a multiarch image, you must have Docker 19.03 or higher versio
 ./build.sh -t <repo>[:<tag>] .
 ```
 
+To build for a specific platform,
+```
+PLATFORMS="linux/arm/v7" ./build.sh -t jparklab/synology-csi
+```
+
 # Test
 
 Here we use [gocsi](https://github.com/rexray/gocsi) to test the driver.
