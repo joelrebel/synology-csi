@@ -14,9 +14,6 @@
 # limitations under the License.
 #
 
-# default values
-ARG BUILDPLATFORM="linux/amd64"
-ARG TARGETPLATFORM="linux/amd64"
 #
 # Use 2-stage builds to reduce size of the final docker image
 #
@@ -25,7 +22,7 @@ ARG TARGETPLATFORM="linux/amd64"
 FROM --platform=$BUILDPLATFORM golang:1.13.6-alpine as builder
 ARG BUILDPLATFORM
 RUN apk add --no-cache alpine-sdk
-WORKDIR /go/src/github.com/jparklab/synology-csi
+WORKDIR /home/joel/projects/k8s-cluster/synology-csi
 COPY go.mod .
 RUN go mod download
 
@@ -60,7 +57,7 @@ FROM alpine:latest
 LABEL maintainers="Kubernetes Authors"
 LABEL description="Synology CSI Plugin"
 
-RUN apk add --no-cache e2fsprogs xfsprogs util-linux iproute2
-COPY --from=compiler /go/src/github.com/jparklab/synology-csi/bin/synology-csi-driver synology-csi-driver
+RUN apk add --no-cache e2fsprogs xfsprogs util-linux iproute2 blkid
+COPY --from=compiler /home/joel/projects/k8s-cluster/synology-csi/bin/synology-csi-driver synology-csi-driver
 
 ENTRYPOINT ["/synology-csi-driver"]
